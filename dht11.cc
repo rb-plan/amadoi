@@ -58,8 +58,10 @@ void DHT11::readData() {
     if ((j >= 40) && (data[4] == ((data[0] + data[1] + data[2] + data[3]) & 0xFF))) {
         humidity = data[0];
         temperature = data[2];
+        status = 0; // Data is good
     } else {
-        std::cout << "Data not good, skip" << std::endl;
+        status = 2; // Data not good
+        // std::cout << "Data not good, skip" << std::endl;
     }
 }
 
@@ -69,4 +71,8 @@ int DHT11::getTemperature() const {
 
 int DHT11::getHumidity() const {
     return humidity;
+}
+
+int DHT11::getStatus() const {
+    return status;
 }

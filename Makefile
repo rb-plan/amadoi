@@ -21,5 +21,10 @@ dht22.o: dht22.cc dht22.h sensor.h
 mysql_connector.o: mysql_connector.cc mysql_connector.h
 	$(CXX) $(CXXFLAGS) -c mysql_connector.cc
 
+install: amadoi
+	mkdir -p /usr/local/amadoi
+	cp amadoi /usr/local/amadoi/amadoi
+	chmod 755 /usr/local/amadoi/amadoi
+
 clean:
 	rm -f *.o amadoi

@@ -31,3 +31,7 @@
 *.out
 *.app
 amadoi
+.vscode
+
+# Other
+tips.txt

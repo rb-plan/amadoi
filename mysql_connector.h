@@ -11,6 +11,7 @@ public:
     MySQLConnector(const std::string& host, const std::string& user, const std::string& password, const std::string& db);
     ~MySQLConnector();
     bool insertData(int temp, int hum, int status, int type);
+    int getConstant(const std::string& param, int defaultValue);
 
 private:
     MYSQL* conn;

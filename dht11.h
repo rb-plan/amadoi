@@ -14,6 +14,7 @@ public:
     void readData() override;
     int getTemperature() const override;
     int getHumidity() const override;
+    int getStatus() const override;
 
 private:
     static const int MAXTIMINGS = 85;
@@ -23,6 +24,7 @@ private:
     void resetData();
     int temperature;
     int humidity;
+    int status;
 };
 
 #endif // DHT11_H
