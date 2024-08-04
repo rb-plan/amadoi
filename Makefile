@@ -1,21 +1,25 @@
-CXX = g++
-CXXFLAGS = -O3 -Wall -I/usr/local/include
-LDFLAGS = -L/usr/local/lib -lwiringPi -lpthread -lm
+CXX = c++
+CXXFLAGS = -std=c++2a -I/usr/local/mysql/include/
+LDFLAGS = -L/usr/local/mysql/lib/ -lmysqlclient -lwiringPi
 
-SRC = main.cc dht11.cc dht22.cc
-OBJ = $(SRC:.cc=.o)
-BIN = amadoi
+OBJS = main.o dht11.o dht22.o mysql_connector.o
 
-all: $(BIN)
+all: amadoi
 
-$(BIN): $(OBJ)
-	$(CXX) -o $@ $^ $(LDFLAGS)
+amadoi: $(OBJS)
+	$(CXX) $(CXXFLAGS) -o amadoi $(OBJS) $(LDFLAGS)
 
-%.o: %.cc
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+main.o: main.cc dht11.h dht22.h mysql_connector.h
+	$(CXX) $(CXXFLAGS) -c main.cc
+
+dht11.o: dht11.cc dht11.h sensor.h
+	$(CXX) $(CXXFLAGS) -c dht11.cc
+
+dht22.o: dht22.cc dht22.h sensor.h
+	$(CXX) $(CXXFLAGS) -c dht22.cc
+
+mysql_connector.o: mysql_connector.cc mysql_connector.h
+	$(CXX) $(CXXFLAGS) -c mysql_connector.cc
 
 clean:
-	rm -f $(OBJ) $(BIN)
-
-.PHONY: all clean
-
+	rm -f *.o amadoi

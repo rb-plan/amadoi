@@ -1,7 +1,7 @@
 // dht22.cc
 #include "dht22.h"
 
-DHT22::DHT22(int pin) : pin(pin) {
+DHT22::DHT22(int pin) : pin(pin), temperature(0), humidity(0) {
     data.fill(0);
 }
 
@@ -13,7 +13,6 @@ void DHT22::readData() {
     uint8_t laststate = HIGH;
     uint8_t counter = 0;
     uint8_t j = 0;
-    float f; // fahrenheit
 
     resetData();
 
@@ -57,12 +56,17 @@ void DHT22::readData() {
     // check we read 40 bits (8bit x 5 ) + verify checksum in the last byte
     // print it out if data is good
     if ((j >= 40) && (data[4] == ((data[0] + data[1] + data[2] + data[3]) & 0xFF))) {
-        f = data[2] * 9. / 5. + 32;
-        std::cout << "Humidity = " << static_cast<int>(data[0]) << "." << static_cast<int>(data[1])
-                  << " % Temperature = " << static_cast<int>(data[2]) << "." << static_cast<int>(data[3])
-                  << " *C (" << std::fixed << std::setprecision(1) << f << " *F)" << std::endl;
+        humidity = data[0];
+        temperature = data[2];
     } else {
         std::cout << "Data not good, skip" << std::endl;
     }
 }
 
+int DHT22::getTemperature() const {
+    return temperature;
+}
+
+int DHT22::getHumidity() const {
+    return humidity;
+}
