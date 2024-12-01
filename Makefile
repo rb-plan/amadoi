@@ -1,6 +1,8 @@
 CXX = c++
-CXXFLAGS = -std=c++2a -I/usr/local/mysql/include/
-LDFLAGS = -L/usr/local/mysql/lib/ -lmysqlclient -lwiringPi
+# CXXFLAGS = -std=c++2a -I/usr/local/mysql/include/
+CXXFLAGS = -std=c++2a 
+# LDFLAGS = -L/usr/local/mysql/lib/ -lmysqlclient -lwiringPi
+LDFLAGS = -lmysqlclient -lwiringPi
 
 OBJS = main.o dht11.o dht22.o mysql_connector.o
 

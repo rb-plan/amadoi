@@ -2,7 +2,7 @@
 #ifndef MYSQL_CONNECTOR_H
 #define MYSQL_CONNECTOR_H
 
-#include <mysql.h>
+#include <mysql/mysql.h>
 #include <iostream>
 #include <string>
 

@@ -1,6 +1,6 @@
 // mysql_connector.cc
 #include "mysql_connector.h"
-#include <mysql.h>
+#include <mysql/mysql.h>
 #include <iostream>
 
 MySQLConnector::MySQLConnector(const std::string& host, const std::string& user, const std::string& password, const std::string& db) {

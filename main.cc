@@ -12,7 +12,7 @@ int main() {
     }
 
     DHT11 dht11Sensor(7);
-    MySQLConnector db("10.24.0.1", "usr1", "debian", "amadoi");
+    MySQLConnector db("10.20.0.26", "usr1", "debian", "amadoi");
 
     // Get the sampling rate from the database
     int samplingRate = db.getConstant("dht11_rate", 5000); // Default to 5000ms if not found
