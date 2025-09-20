@@ -1,16 +1,15 @@
 // mysql_connector.cc
 #include "mysql_connector.h"
-#include <mysql/mysql.h>
 #include <iostream>
 
-MySQLConnector::MySQLConnector(const std::string& host, const std::string& user, const std::string& password, const std::string& db) {
+MySQLConnector::MySQLConnector(const std::string& host, const uint16_t& port, const std::string& user, const std::string& password, const std::string& db) {
     conn = mysql_init(nullptr);
     if (conn == nullptr) {
         std::cerr << "mysql_init() failed" << std::endl;
         exit(1);
     }
 
-    if (mysql_real_connect(conn, host.c_str(), user.c_str(), password.c_str(), db.c_str(), 0, nullptr, 0) == nullptr) {
+    if (mysql_real_connect(conn, host.c_str(), user.c_str(), password.c_str(), db.c_str(), port, nullptr, 0) == nullptr) {
         std::cerr << "mysql_real_connect() failed" << std::endl;
         mysql_close(conn);
         exit(1);
