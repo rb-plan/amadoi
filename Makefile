@@ -70,6 +70,7 @@ install: $(TARGET)
 	sudo chmod 755 /usr/local/amadoi/amadoi
 	sudo mkdir -p /etc/amadoi
 	sudo cp $(CONFIG_DIR)/amadoi.yml /etc/amadoi/
+	sudo cp $(CONFIG_DIR)/amadoi.yml /usr/local/amadoi/
 	@echo "Installation completed!"
 
 # Install systemd service

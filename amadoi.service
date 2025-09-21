@@ -3,11 +3,14 @@ Description=Amadoi Temperature Monitoring Service
 After=network.target
 
 [Service]
+Type=simple
 ExecStart=/usr/local/amadoi/amadoi -c /usr/local/amadoi/amadoi.yml
 Restart=always
-WorkingDirectory=/etc/amadoi
-# User=pi
-# Group=pi
+RestartSec=5
+User=root
+Group=root
+StandardOutput=journal
+StandardError=journal
 
 [Install]
 WantedBy=multi-user.target
