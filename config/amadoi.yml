@@ -1,0 +1,15 @@
+# Amadoi Configuration File
+# API Configuration
+api_url: "http://10.20.0.26:8000/habitat/raw/add"
+device_code: "SENS-FARM01"
+
+# Sampling Configuration
+sampling_rate: 5000
+
+# Sensor Configuration
+sensor_pin: 7
+sensor_type: "dht11"
+
+# Calibration
+temp_offset: -2
+hum_offset: 0

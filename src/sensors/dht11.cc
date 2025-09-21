@@ -1,15 +1,15 @@
-// dht22.cc
-#include "dht22.h"
+// dht11.cc
+#include "sensors/dht11.h"
 
-DHT22::DHT22(int pin) : pin(pin), temperature(0), humidity(0) {
+DHT11::DHT11(int pin) : pin(pin), temperature(0), humidity(0) {
     data.fill(0);
 }
 
-void DHT22::resetData() {
+void DHT11::resetData() {
     data.fill(0);
 }
 
-void DHT22::readData() {
+void DHT11::readData() {
     uint8_t laststate = HIGH;
     uint8_t counter = 0;
     uint8_t j = 0;
@@ -58,15 +58,21 @@ void DHT22::readData() {
     if ((j >= 40) && (data[4] == ((data[0] + data[1] + data[2] + data[3]) & 0xFF))) {
         humidity = data[0];
         temperature = data[2];
+        status = 0; // Data is good
     } else {
-        std::cout << "Data not good, skip" << std::endl;
+        status = 2; // Data not good
+        // std::cout << "Data not good, skip" << std::endl;
     }
 }
 
-int DHT22::getTemperature() const {
+int DHT11::getTemperature() const {
     return temperature;
 }
 
-int DHT22::getHumidity() const {
+int DHT11::getHumidity() const {
     return humidity;
+}
+
+int DHT11::getStatus() const {
+    return status;
 }

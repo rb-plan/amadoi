@@ -5,7 +5,7 @@ After=network.target
 [Service]
 ExecStart=/usr/local/amadoi/amadoi
 Restart=always
-Environment=LD_LIBRARY_PATH=/usr/local/mysql/lib:$LD_LIBRARY_PATH
+WorkingDirectory=/etc/amadoi
 # User=pi
 # Group=pi
 

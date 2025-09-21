@@ -1,19 +1,20 @@
-// dht22.h
-#ifndef DHT22_H
-#define DHT22_H
+// dht11.h
+#ifndef DHT11_H
+#define DHT11_H
 
-#include "sensor.h"
+#include "sensors/sensor.h"
 #include <wiringPi.h>
 #include <array>
 #include <iostream>
 #include <iomanip>
 
-class DHT22 : public Sensor {
+class DHT11 : public Sensor {
 public:
-    DHT22(int pin);
+    DHT11(int pin);
     void readData() override;
     int getTemperature() const override;
     int getHumidity() const override;
+    int getStatus() const override;
 
 private:
     static const int MAXTIMINGS = 85;
@@ -23,6 +24,7 @@ private:
     void resetData();
     int temperature;
     int humidity;
+    int status;
 };
 
-#endif // DHT22_H
+#endif // DHT11_H
