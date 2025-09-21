@@ -76,27 +76,44 @@ int main(int argc, char* argv[]) {
     std::cout << "  Sensor Pin: " << sensorPin << std::endl;
     std::cout << "  Temperature Offset: " << tempOffset << std::endl;
 
+    std::cout << "\nStarting sensor monitoring loop..." << std::endl;
+    std::cout << "Press Ctrl+C to stop\n" << std::endl;
+
     while (true) {
         dht11Sensor.readData();
         
         // Get raw sensor data
         auto cTemp = dht11Sensor.getTemperature();
         auto cHumi = dht11Sensor.getHumidity();
+        auto status = dht11Sensor.getStatus();
         
-        printf("Raw sensor data - Temp: %d, Hum: %d\n", cTemp, cHumi);
+        printf("Raw sensor data - Temp: %d, Hum: %d, Status: %d\n", cTemp, cHumi, status);
         
-        // Apply calibration if data is valid
-        if (cTemp > 0 && cHumi > 0) {
+        // Check sensor status and data validity
+        if (status == 0) {
+            // Data is good
             cTemp += tempOffset; // Apply temperature offset
             std::cout << "Calibrated data - Temp: " << cTemp << ", Hum: " << cHumi << std::endl;
             
             // Upload to API
-            bool success = apiUploader.uploadSensorData(cTemp, cHumi, dht11Sensor.getStatus());
+            bool success = apiUploader.uploadSensorData(cTemp, cHumi, status);
+            if (!success) {
+                std::cerr << "Failed to upload sensor data to API" << std::endl;
+            }
+        } else if (status == 1) {
+            // Data may be valid but checksum failed
+            cTemp += tempOffset; // Apply temperature offset
+            std::cout << "Using data with checksum warning - Temp: " << cTemp << ", Hum: " << cHumi << std::endl;
+            
+            // Upload to API with warning
+            bool success = apiUploader.uploadSensorData(cTemp, cHumi, status);
             if (!success) {
                 std::cerr << "Failed to upload sensor data to API" << std::endl;
             }
         } else {
-            std::cout << "Invalid sensor data, skipping upload" << std::endl;
+            // Data is invalid
+            std::cout << "Invalid sensor data (status: " << status << "), skipping upload" << std::endl;
+            std::cout << "Possible causes: sensor not connected, power issue, or hardware problem" << std::endl;
         }
 
         delay(samplingRate); // wait for the defined sampling rate

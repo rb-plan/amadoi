@@ -28,6 +28,7 @@ OBJECTS = $(SOURCES:$(SRC_DIR)/%.cc=$(BUILD_DIR)/%.o)
 
 # Target executable
 TARGET = $(BUILD_DIR)/amadoi
+DIAGNOSTIC = sensor_diagnostic
 
 # Default target
 all: $(TARGET)
@@ -37,6 +38,12 @@ $(TARGET): $(OBJECTS) | $(BUILD_DIR)
 	@echo "Linking $(TARGET)..."
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 	@echo "Build completed successfully!"
+
+# Create diagnostic tool
+$(DIAGNOSTIC): sensor_diagnostic.cc $(BUILD_DIR)/sensors/dht11.o $(BUILD_DIR)/config/config_reader.o | $(BUILD_DIR)
+	@echo "Building diagnostic tool..."
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -o $@ sensor_diagnostic.cc $(BUILD_DIR)/sensors/dht11.o $(BUILD_DIR)/config/config_reader.o -lwiringPi
+	@echo "Diagnostic tool built successfully!"
 
 # Create build directory structure
 $(BUILD_DIR):
@@ -52,7 +59,7 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cc | $(BUILD_DIR)
 # Clean build artifacts
 clean:
 	@echo "Cleaning build artifacts..."
-	rm -rf $(BUILD_DIR)
+	rm -rf $(BUILD_DIR) $(DIAGNOSTIC)
 	@echo "Clean completed!"
 
 # Install the application
@@ -110,6 +117,7 @@ help:
 	@echo "  status       - Show service status"
 	@echo "  run [ARGS]   - Run the application (for testing)"
 	@echo "                 Example: make run ARGS=\"-c /etc/amadoi/config.yml\""
+	@echo "  diagnostic   - Build and run sensor diagnostic tool"
 	@echo "  debug        - Build debug version"
 	@echo "  release      - Build optimized release version"
 	@echo "  help         - Show this help message"
@@ -121,5 +129,10 @@ $(BUILD_DIR)/sensors/dht11.o: include/sensors/dht11.h include/sensors/sensor.h
 $(BUILD_DIR)/sensors/dht22.o: include/sensors/dht22.h include/sensors/sensor.h
 $(BUILD_DIR)/main.o: include/sensors/dht11.h include/api/api_uploader.h include/config/config_reader.h
 
+# Diagnostic tool
+diagnostic: $(DIAGNOSTIC)
+	@echo "Running sensor diagnostic tool..."
+	sudo ./$(DIAGNOSTIC)
+
 # Phony targets
-.PHONY: all clean install install-service start stop status run debug release help
+.PHONY: all clean install install-service start stop status run debug release help diagnostic

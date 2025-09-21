@@ -22,6 +22,7 @@ private:
     std::array<uint8_t, 5> data;
 
     void resetData();
+    bool isValidData(uint8_t humidity, uint8_t temperature) const;
     int temperature;
     int humidity;
     int status;
