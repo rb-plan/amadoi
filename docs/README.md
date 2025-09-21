@@ -14,7 +14,7 @@
 
 ```bash
 sudo apt update
-sudo apt install -y libcurl4-openssl-dev libjsoncpp-dev libmariadb-dev wiringpi
+sudo apt install -y libcurl4-openssl-dev libjsoncpp-dev wiringpi
 ```
 
 ## 编译
