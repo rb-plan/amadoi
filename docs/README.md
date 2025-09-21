@@ -46,8 +46,25 @@ hum_offset: 0
 
 ## 运行
 
+### 使用默认配置文件
 ```bash
-./amadoi
+./build/amadoi
+```
+
+### 指定配置文件
+```bash
+./build/amadoi -c /path/to/config.yml
+```
+
+### 查看帮助
+```bash
+./build/amadoi --help
+```
+
+### 使用make运行（用于测试）
+```bash
+make run                           # 使用默认配置
+make run ARGS="-c custom.yml"      # 使用自定义配置
 ```
 
 ## API接口格式

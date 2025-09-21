@@ -4,18 +4,55 @@
 #include "config/config_reader.h"
 #include <wiringPi.h>
 #include <iostream>
+#include <string>
 
-int main() {
+void printUsage(const char* programName) {
+    std::cout << "Usage: " << programName << " [OPTIONS]" << std::endl;
+    std::cout << "Options:" << std::endl;
+    std::cout << "  -c, --config FILE    Specify configuration file (default: config/amadoi.yml)" << std::endl;
+    std::cout << "  -h, --help           Show this help message" << std::endl;
+    std::cout << std::endl;
+    std::cout << "Examples:" << std::endl;
+    std::cout << "  " << programName << "                           # Use default config" << std::endl;
+    std::cout << "  " << programName << " -c /etc/amadoi/config.yml  # Use custom config" << std::endl;
+}
+
+int main(int argc, char* argv[]) {
+    std::string configFile = "config/amadoi.yml";
+    
+    // Parse command line arguments
+    for (int i = 1; i < argc; i++) {
+        std::string arg = argv[i];
+        
+        if (arg == "-h" || arg == "--help") {
+            printUsage(argv[0]);
+            return 0;
+        } else if (arg == "-c" || arg == "--config") {
+            if (i + 1 < argc) {
+                configFile = argv[++i];
+            } else {
+                std::cerr << "Error: --config requires a file path" << std::endl;
+                printUsage(argv[0]);
+                return 1;
+            }
+        } else {
+            std::cerr << "Error: Unknown argument '" << arg << "'" << std::endl;
+            printUsage(argv[0]);
+            return 1;
+        }
+    }
+
     std::cout << "Raspberry Pi wiringPi DHT11 Temperature test program with API upload" << std::endl;
+    std::cout << "Using configuration file: " << configFile << std::endl;
 
     if (wiringPiSetup() == -1) {
         return 1;
     }
 
     // Load configuration
-    ConfigReader config("config/amadoi.yml");
+    ConfigReader config(configFile);
     if (!config.loadConfig()) {
-        std::cerr << "Failed to load configuration file" << std::endl;
+        std::cerr << "Failed to load configuration file: " << configFile << std::endl;
         return 1;
     }
 

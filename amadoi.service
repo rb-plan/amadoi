@@ -3,7 +3,7 @@ Description=Amadoi Temperature Monitoring Service
 After=network.target
 
 [Service]
-ExecStart=/usr/local/amadoi/amadoi
+ExecStart=/usr/local/amadoi/amadoi -c /etc/amadoi/amadoi.yml
 Restart=always
 WorkingDirectory=/etc/amadoi
 # User=pi

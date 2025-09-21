@@ -88,7 +88,7 @@ status:
 # Run the application (for testing)
 run: $(TARGET)
 	@echo "Running amadoi..."
-	cd $(BUILD_DIR) && ./amadoi
+	cd $(BUILD_DIR) && ./amadoi $(if $(ARGS),$(ARGS),-c ../config/amadoi.yml)
 
 # Debug build
 debug: CXXFLAGS += -g -DDEBUG
@@ -108,7 +108,8 @@ help:
 	@echo "  start        - Start the systemd service"
 	@echo "  stop         - Stop the systemd service"
 	@echo "  status       - Show service status"
-	@echo "  run          - Run the application (for testing)"
+	@echo "  run [ARGS]   - Run the application (for testing)"
+	@echo "                 Example: make run ARGS=\"-c /etc/amadoi/config.yml\""
 	@echo "  debug        - Build debug version"
 	@echo "  release      - Build optimized release version"
 	@echo "  help         - Show this help message"

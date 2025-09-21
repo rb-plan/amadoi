@@ -61,6 +61,8 @@ amadoi/
 
 ### 主程序 (`src/main.cc`)
 - 程序入口点
+- 命令行参数解析
+- 配置文件路径指定
 - 初始化各个模块
 - 主循环逻辑
 
@@ -83,6 +85,30 @@ amadoi/
 - **警告**: -Wall -Wextra
 - **包含路径**: -Iinclude
 - **链接库**: libcurl, jsoncpp, wiringPi
+
+## 命令行参数
+
+程序支持以下命令行参数：
+
+- `-c, --config FILE`: 指定配置文件路径（默认：config/amadoi.yml）
+- `-h, --help`: 显示帮助信息
+
+### 使用示例
+
+```bash
+# 使用默认配置文件
+./build/amadoi
+
+# 指定配置文件
+./build/amadoi -c /etc/amadoi/config.yml
+
+# 显示帮助
+./build/amadoi --help
+
+# 通过make运行（用于测试）
+make run
+make run ARGS="-c custom.yml"
+```
 
 ## 配置文件
 
