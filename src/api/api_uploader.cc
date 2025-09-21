@@ -39,14 +39,22 @@ size_t ApiUploader::WriteCallback(void* contents, size_t size, size_t nmemb, voi
 }
 
 bool ApiUploader::uploadSensorData(int temp, int hum, int status) {
-    if (status != 0) {
-        // Skip upload if sensor data is not valid
+    if (status == 2) {
+        // Skip upload if sensor data is definitely invalid
         std::cout << "Skipping upload due to invalid sensor data (status: " << status << ")" << std::endl;
         return false;
     }
     
+    if (status == 1) {
+        std::cout << "Warning: Using sensor data with checksum failure (status: " << status << ")" << std::endl;
+    }
+    
     std::string jsonPayload = createJsonPayload(temp, hum);
     std::string responseString;
+    
+    // Debug output (can be enabled for troubleshooting)
+    // std::cout << "Debug: API URL = '" << apiUrl << "'" << std::endl;
+    // std::cout << "Debug: JSON payload = " << jsonPayload << std::endl;
     
     struct curl_slist* headers = nullptr;
     headers = curl_slist_append(headers, "Content-Type: application/json");

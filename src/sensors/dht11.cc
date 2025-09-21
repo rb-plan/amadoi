@@ -1,7 +1,7 @@
 // dht11.cc
 #include "sensors/dht11.h"
 
-DHT11::DHT11(int pin) : pin(pin), temperature(0), humidity(0) {
+DHT11::DHT11(int pin) : pin(pin), temperature(0), humidity(0), status(2) {
     data.fill(0);
 }
 
@@ -60,8 +60,12 @@ void DHT11::readData() {
         temperature = data[2];
         status = 0; // Data is good
     } else {
-        status = 2; // Data not good
-        // std::cout << "Data not good, skip" << std::endl;
+        humidity = data[0];  // Still try to use the data even if checksum fails
+        temperature = data[2];
+        status = 1; // Data may be valid but checksum failed
+        std::cout << "Warning: Checksum failed, but using data anyway. j=" << j 
+                  << ", checksum=" << (int)data[4] 
+                  << ", expected=" << ((data[0] + data[1] + data[2] + data[3]) & 0xFF) << std::endl;
     }
 }
 
