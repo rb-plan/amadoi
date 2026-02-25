@@ -13,13 +13,8 @@ bool DHT11::isValidData(uint8_t humidity, uint8_t temperature) const {
     // DHT11 specifications:
     // Temperature: 0-50°C (0-50)
     // Humidity: 20-95% (20-95)
-    // Check for obviously invalid values like 255 (sensor error)
     
-    if (temperature == 255 || humidity == 255) {
-        return false; // 255 indicates sensor error
-    }
-    
-    if (temperature > 50) {
+    if (temperature > 50 || temperature < -50) {
         return false; // Temperature out of DHT11 range
     }
     
